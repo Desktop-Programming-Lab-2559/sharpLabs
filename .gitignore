@@ -1,1 +1,15 @@
-﻿/.idea/.idea.Labs/.idea/contentModel.xml
+﻿*.xml
+*.cache
+*.csproj
+*.dll
+*.exe
+*.pdb
+.gitignore
+.idea
+*.sln
+*.json
+*.txt
+*.targets
+*.AssemblyInfo.*
+*.props
+*.user
