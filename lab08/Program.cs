@@ -24,7 +24,7 @@ namespace lab08
 
             // b
             var arr = mainString.Split(" ");
-            arr[^2] = word;
+            if (arr.Length > 2) arr[^2] = word;
             Console.WriteLine(Strings.Join(arr));
             
             // c
@@ -39,7 +39,7 @@ namespace lab08
                     Console.WriteLine($"\"{arr[num - 1]}\"");
                 }
                 catch (IndexOutOfRangeException e)
-                {
+                { 
                     Console.WriteLine("Array contain less elements than entered num");
                     if (arr.Length != 0) Console.WriteLine($"Last word \"{arr[^1]}\"");
                 }
