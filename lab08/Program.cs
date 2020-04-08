@@ -20,6 +20,7 @@ namespace lab08
             if (word == null) return;
             var copy = (string) mainString.Clone();
             int count = (mainString.Length - copy.Replace(word, "").Length) / word.Length;
+            // count = mainString.Count(word);
             Console.WriteLine($"Count = {count}");
 
             // b

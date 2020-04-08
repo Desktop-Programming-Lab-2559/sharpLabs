@@ -12,7 +12,7 @@ namespace lab03
     {
         static void Main(string[] args)
         {
-            PartA();
+            // PartA();
             PartB();
         }
 
@@ -55,7 +55,7 @@ namespace lab03
             }
 
             Console.WriteLine();
-            Console.WriteLine($"Gmean = {Math.Sign(value)*Math.Pow(Math.Abs(value), 1.0/list.Count)}");
+            Console.WriteLine($"Gmean = {(list.Count != 0 ? Math.Sign(value)*Math.Pow(Math.Abs(value), 1.0/list.Count) : 0)}");
         }
     }
 }

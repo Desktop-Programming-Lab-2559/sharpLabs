@@ -13,8 +13,8 @@ namespace lab09
         static void Main(string[] args)
         {
             // x => x * x * x - 4 * x * x + x + 2
-            Console.WriteLine(FindRoot(2, 3, 
-                x => x * x, 1e-100));
+            Console.WriteLine(FindRoot(1, 3, 
+                x => x*x - 4, 1e-100));
         }
 
         static double FindRoot(double left, double right, Equation equation, double precision)
@@ -29,7 +29,7 @@ namespace lab09
             if (equation(left) * equation(right) > 0)
             {
                 Console.WriteLine("The equation have same sign on ends of the segment.\n" +
-                                  "It is possible that equation hasn't root on this segment");
+                                  "It is possible that program may not to able to find the root");
             }
             
             double root = (left + right) / 2;

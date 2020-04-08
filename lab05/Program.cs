@@ -42,14 +42,15 @@ namespace lab05
                 stream.Read(arr, 0, arr.Length);
                 var text = System.Text.Encoding.Default.GetString(arr);
                 
-                sNum = text.Split(' ')[0];
-                if (!double.TryParse(sNum, out _))
+                sNum = text.Split(' ')[1];
+                // sNum = "0,3";
+                if (!double.TryParse(sNum, out var c))
                 {
                     Console.WriteLine("Cannot parse number");
                     return;
                 }
                 
-                string sBase = text.Split(' ')[1];
+                string sBase = text.Split(' ')[2];
                 if (!int.TryParse(sBase, out baseNum))
                 {
                     Console.WriteLine("Cannot parse base");

@@ -9,8 +9,8 @@ namespace lab04
     {
         static void Main(string[] args)
         {
-            args[0] = "123456";
-            args[1] = "16";
+            args[0] = "13";
+            args[1] = "2";
             if (args.Length < 2)
             {
                 Console.WriteLine("Wrong number of arguments");

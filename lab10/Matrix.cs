@@ -9,11 +9,12 @@ namespace lab10
     public class Matrix : ICloneable, IEnumerable, IEnumerator
     {
         private List<List<double>> _matrix;
-        private int enumeratorIndex = 0;
+        private int _enumeratorIndex = 0;
 
         public Matrix()
         {
-            _matrix = new List<List<double>>(1) {[0] = new List<double> {default}};
+            _matrix = new List<List<double>>(1);
+            _matrix.Add(new List<double>(1) {0});
         }
 
         public Matrix(int size)
@@ -76,7 +77,7 @@ namespace lab10
 
         private void Add(Matrix matrix)
         {
-            if (Size != matrix.Size) throw new DifferentSizeException();
+            if (Size != matrix.Size) Matrix.Resize(this, matrix);
 
             for (int i = 0; i < Size; i++)
             {
@@ -87,9 +88,35 @@ namespace lab10
             }
         }
 
+        private static void Resize(Matrix a, Matrix b)
+        {
+            if (a.Size == b.Size) return;
+
+            if (a.Size < b.Size)
+            {
+                Matrix t = a;
+                a = b;
+                b = t;
+            }
+
+            while (b._matrix.Count != a._matrix.Count)
+            {
+                b._matrix.Add(new List<double>(a.Size));
+                b._matrix[^1] = new List<double>(a.Size);
+            }
+
+            for (int i = 0; i < b.Size; i++)
+            {
+                while (b._matrix[i].Count != a.Size)
+                {
+                    b._matrix[i].Add(0);
+                }
+            }
+        }
+
         private void Sub(Matrix matrix)
         {
-            if (Size != matrix.Size) throw new DifferentSizeException();
+            if (Size != matrix.Size) Resize(this, matrix);
 
             for (int i = 0; i < Size; i++)
             {
@@ -124,7 +151,7 @@ namespace lab10
 
         private void Mul(Matrix m)
         {
-            if (Size != m.Size) throw new DifferentSizeException();
+            if (Size != m.Size) Resize(this, m);
             Matrix t = new Matrix(this);
             for (int i = 0; i < Size; i++)
             {
@@ -154,6 +181,24 @@ namespace lab10
             }
 
             return s.Remove(s.Length - 1, 1).ToString();
+        }
+
+        public string ToLine()
+        {
+            var s = new StringBuilder();
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    s.Append($"{_matrix[i][j]} ");
+                }
+
+                s.Append("// ");
+            }
+
+            s.Remove(s.Length - 4, 4);
+
+            return s.ToString();
         }
 
         static public Matrix Sum(Matrix a, Matrix b)
@@ -314,34 +359,50 @@ namespace lab10
             return inverse.Transpose();
         }
 
-        private Matrix Pop(int row, int column)
+        public Matrix Pop(int row, int column)
         {
             Matrix less = new Matrix(this);
-            for (int i = 0; i < column; i++)
+            for (int i = 0; i < Size; i++)
             {
-                _matrix[i].RemoveAt(column);
+                less._matrix[i].RemoveAt(column);
             }
             less._matrix.RemoveAt(row);
             return less;
         }
+        
+        public bool IsZero()
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = 0; j < Size; j++)
+                {
+                    if (Math.Abs(_matrix[i][j]) > double.Epsilon)
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
 
         public IEnumerator GetEnumerator()
         {
-            enumeratorIndex = -1;
+            _enumeratorIndex = -1;
             return this;
         }
 
         public bool MoveNext()
         {
-            return ++enumeratorIndex < Size * Size;
+            return ++_enumeratorIndex < Size * Size;
         }
 
         public void Reset()
         {
-            enumeratorIndex = 0;
+            _enumeratorIndex = 0;
         }
 
-        object IEnumerator.Current => _matrix[enumeratorIndex / Size][enumeratorIndex % Size];
+        object IEnumerator.Current => _matrix[_enumeratorIndex / Size][_enumeratorIndex % Size];
         
         //                                EXCEPTIONS
         
