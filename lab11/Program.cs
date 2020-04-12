@@ -18,14 +18,42 @@ namespace lab11
     {
         static void Main(string[] args)
         {
-            var c = new ComplexL(1,1);
-            c.DivideByZeroEvent += PrintEvent;
-            c.DivideByZeroEvent += PrintEventWithArgs;
+            // var c = new ComplexL(1,1);
+            // c.DivideByZeroEvent += PrintEvent;
+            // c.DivideByZeroEvent += PrintEventWithArgs;
 
-            var c2 = new ComplexL(0, 0);
+            // var c2 = new ComplexL(0, 0);
             // Console.WriteLine(c2.Arg);
-            Console.WriteLine(c / c2);
+            // Console.WriteLine(c / c2);
+            
+            // int[] a = {1, 2, 3};
+            // var b = new[] {1, 2, 3};
+            // var v = new VectorL<int>(new int[]{1234, 2});
 
+            if (false) {
+                var basis = new[]
+                {
+                    new VectorL<ComplexL>(ComplexL.One, ComplexL.Zero, ComplexL.Zero),
+                    new VectorL<ComplexL>(ComplexL.Zero, ComplexL.One, ComplexL.Zero),
+                    new VectorL<ComplexL>(ComplexL.Zero, ComplexL.Zero, ComplexL.One),
+                };
+
+                var newBasis = VectorL<ComplexL>.Orthogonality(basis);
+                newBasis.ForEach(Console.WriteLine);
+                Console.WriteLine($"Vec length = {newBasis[0].Abs()}");
+            }
+
+            if (false)
+            {
+                VectorL<int> a = new VectorL<int>(3, 2, 2), b = new VectorL<int>(3, 2, 2);
+                Console.WriteLine(a == b);
+            }
+
+            if (true)
+            {
+                var v = new VectorL<int>();
+                Console.WriteLine(v);
+            }
         }
 
         private static void PrintEvent(object sender, ComplexEventArgs args)

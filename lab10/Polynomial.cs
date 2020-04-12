@@ -8,6 +8,14 @@ namespace lab10
 {
     public class Polynomial<T> : IEnumerable, ICloneable where T : new()
     {
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Polynomial<T>) obj);
+        }
+
         private List<T> _coefficients;
 
         // public Polynomial(List<T> coefficients)
@@ -141,8 +149,7 @@ namespace lab10
                         if (m.IsZero()) _coefficients.RemoveAt(_coefficients.Count - 1);
                         break;
                     default:
-                        dynamic c = _coefficients[^1];
-                        if (Math.Abs(c) < double.Epsilon) _coefficients.RemoveAt(_coefficients.Count - 1);
+                        if (Math.Abs((dynamic)_coefficients[^1]) < double.Epsilon) _coefficients.RemoveAt(_coefficients.Count - 1);
                         break;
                 }
             }
@@ -341,14 +348,14 @@ namespace lab10
         //     return res;
         // }
 
-        protected bool Equals(Polynomial<T> other)
+        public bool Equals(Polynomial<T> other)
         {
             return Equals(_coefficients, other._coefficients);
         }
 
         public override int GetHashCode()
         {
-            return (_coefficients != null ? _coefficients.GetHashCode() : 0);
+            return _coefficients != null ? _coefficients.GetHashCode() : 0;
         }
 
         public IEnumerator GetEnumerator()

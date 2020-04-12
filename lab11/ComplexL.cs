@@ -27,6 +27,12 @@ namespace lab11
             DivideByZeroEvent = c.DivideByZeroEvent;
         }
 
+        public ComplexL()
+        {
+            _real = 0;
+            _imagine = 0;
+        }
+
         private void Add(ComplexL c)
         {
             _real += c._real;

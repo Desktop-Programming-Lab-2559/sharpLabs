@@ -94,7 +94,7 @@ namespace lab10
 
             if (a.Size < b.Size)
             {
-                Matrix t = a;
+                var t = a;
                 a = b;
                 b = t;
             }
@@ -254,7 +254,7 @@ namespace lab10
             return res;
         }
 
-        public Matrix Transpose()
+        public Matrix TransposeNew()
         {
             var m = new Matrix(this);
             for (int i = 0; i < Size; i++)
@@ -265,6 +265,19 @@ namespace lab10
                 }
             }
             return m;
+        }
+        
+        public void TransposeThis()
+        {
+            for (int i = 0; i < Size; i++)
+            {
+                for (int j = i; j < Size; j++)
+                {
+                    var t = _matrix[j][i];
+                    _matrix[j][i] = _matrix[i][j];
+                    _matrix[i][j] = t;
+                }
+            }
         }
 
         private void Swap(int first, int second)
@@ -356,7 +369,7 @@ namespace lab10
 
             inverse *= 1 / m.Determinant();
             
-            return inverse.Transpose();
+            return inverse.TransposeNew();
         }
 
         public Matrix Pop(int row, int column)
@@ -384,6 +397,40 @@ namespace lab10
             }
 
             return true;
+        }
+
+        public static bool operator <(Matrix a, Matrix b) => a.Determinant() < b.Determinant();
+
+        public static bool operator >(Matrix a, Matrix b) => a.Determinant() > b.Determinant();
+
+        public static bool operator ==(Matrix a, Matrix b)
+        {
+            if (a.Size != b.Size) return false;
+            
+            for (int i = 0; i < a.Size; i++)
+            {
+                for (int j = 0; j < a.Size; j++)
+                {
+                    if (Math.Abs(a._matrix[i][j] - b._matrix[i][j]) > double.Epsilon) return false;
+                }
+            }
+
+            return true;
+        }
+
+        public static bool operator !=(Matrix a, Matrix b)
+        {
+            if (a.Size != b.Size) return true;
+            
+            for (int i = 0; i < a.Size; i++)
+            {
+                for (int j = 0; j < a.Size; j++)
+                {
+                    if (Math.Abs(a._matrix[i][j] - b._matrix[i][j]) > double.Epsilon) return true;
+                }
+            }
+
+            return false;
         }
 
         public IEnumerator GetEnumerator()
@@ -463,35 +510,5 @@ namespace lab10
             {
             }
         }
-
-        [Serializable]
-        public class DifferentSizeException : Exception
-        {
-            //
-            // For guidelines regarding the creation of new exception types, see
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-            // and
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-            //
-
-            public DifferentSizeException()
-            {
-            }
-
-            public DifferentSizeException(string message) : base(message)
-            {
-            }
-
-            public DifferentSizeException(string message, Exception inner) : base(message, inner)
-            {
-            }
-
-            protected DifferentSizeException(
-                SerializationInfo info,
-                StreamingContext context) : base(info, context)
-            {
-            }
-        }
-
     }
 }
