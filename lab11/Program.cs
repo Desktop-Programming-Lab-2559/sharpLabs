@@ -30,7 +30,7 @@ namespace lab11
             // var b = new[] {1, 2, 3};
             // var v = new VectorL<int>(new int[]{1234, 2});
 
-            if (false) {
+            if (true) {
                 var basis = new[]
                 {
                     new VectorL<ComplexL>(ComplexL.One, ComplexL.Zero, ComplexL.Zero),

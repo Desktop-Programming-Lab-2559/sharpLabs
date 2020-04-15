@@ -147,7 +147,7 @@ namespace lab11
 
         private double GetArg()
         {
-            if (Math.Abs(_real) < double.Epsilon && Math.Abs(_imagine) < double.Epsilon) return 0;
+            if (Math.Abs(_real) < double.Epsilon) return 0;
             var res = Math.Atan(_imagine / _real);
             if (_real < 0) res += _imagine > 0 ? Math.PI : -Math.PI;
             // if (_imagine > 0 && _real < 0) res += Math.PI;

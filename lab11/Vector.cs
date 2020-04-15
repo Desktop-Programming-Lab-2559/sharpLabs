@@ -15,7 +15,7 @@ using System.Text;
 
 namespace lab11
 {
-    public class VectorL<T> : ICloneable, IEnumerable, IComparable<VectorL<T>> where T : new()
+    public class VectorL<T> : ICloneable, IEnumerable, IComparable, IComparable<VectorL<T>> where T : new()
     {
         protected bool Equals(VectorL<T> other)
         {
@@ -136,7 +136,7 @@ namespace lab11
             return Sum(a, b);
         }
 
-        public static VectorL<T> Sum(VectorL<T> a, VectorL<T> b)
+        private static VectorL<T> Sum(VectorL<T> a, VectorL<T> b)
         {
             var res = new VectorL<T>(a);
             res.Add(b);
@@ -147,8 +147,8 @@ namespace lab11
         {
             return Subtract(a, b);
         }
-        
-        public static VectorL<T> Subtract(VectorL<T> a, VectorL<T> b)
+
+        private static VectorL<T> Subtract(VectorL<T> a, VectorL<T> b)
         {
             var res = new VectorL<T>(a);
             res.Subtract(b);
@@ -239,33 +239,12 @@ namespace lab11
             return s.ToString();
         }
 
-        [Serializable]
-        public class DifferentSizeException : Exception
+        public int CompareTo(object? obj)
         {
-            //
-            // For guidelines regarding the creation of new exception types, see
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-            // and
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-            //
-
-            public DifferentSizeException()
-            {
-            }
-
-            public DifferentSizeException(string message) : base(message)
-            {
-            }
-
-            public DifferentSizeException(string message, Exception inner) : base(message, inner)
-            {
-            }
-
-            protected DifferentSizeException(
-                SerializationInfo info,
-                StreamingContext context) : base(info, context)
-            {
-            }
+            var vectorL = obj as VectorL<T>;
+            if (vectorL != null)
+                return CompareTo(vectorL);
+            throw new ArgumentException("Types doesn't comparable");
         }
 
         public int CompareTo(VectorL<T> other)
@@ -293,6 +272,35 @@ namespace lab11
             }
 
             return 0;
+        }
+        
+        [Serializable]
+        public class DifferentSizeException : Exception
+        {
+            //
+            // For guidelines regarding the creation of new exception types, see
+            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
+            // and
+            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
+            //
+
+            public DifferentSizeException()
+            {
+            }
+
+            public DifferentSizeException(string message) : base(message)
+            {
+            }
+
+            public DifferentSizeException(string message, Exception inner) : base(message, inner)
+            {
+            }
+
+            protected DifferentSizeException(
+                SerializationInfo info,
+                StreamingContext context) : base(info, context)
+            {
+            }
         }
     }
 }
