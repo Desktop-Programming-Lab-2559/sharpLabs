@@ -4,6 +4,7 @@
 // булевых формул. Результатом работы программы является файл с СДНФ и СКНФ для каждой формулы. Срок сдачи до 30 мая.
 
 using System;
+using System.Text;
 
 namespace lab14
 {
@@ -11,8 +12,6 @@ namespace lab14
     {
         public static void Main(string[] args)
         {
-            var s = "←";
-            Console.WriteLine(s);
         }
     }
 }
