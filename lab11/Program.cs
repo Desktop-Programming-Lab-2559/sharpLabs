@@ -30,7 +30,26 @@ namespace lab11
             // var b = new[] {1, 2, 3};
             // var v = new VectorL<int>(new int[]{1234, 2});
 
-            if (true) {
+            if (true)
+            {
+                // var doubleArr_1 = new double[4] { 3.0, 2.0, 1.0, 1.0 };
+                // var doubleArr_2 = new double[4] { 3.0, 3.0, 1.0, 2.0 };
+                // var doubleArr_3 = new double[4] { 1.0, 2.0, 1.0, 2.0 };
+                var basis = new[]
+                {
+                    new VectorL<double>(3.0, 2.0, 1.0, 1.0),
+                    new VectorL<double>(3.0, 3.0, 1.0, 2.0),
+                    new VectorL<double>(1.0, 2.0, 1.0, 2.0)
+                };
+                foreach (var v in VectorL<double>.Orthogonality(basis))
+                {
+                    Console.WriteLine(v);
+                }
+
+                
+            }
+
+            if (false) {
                 var basis = new[]
                 {
                     new VectorL<ComplexL>(ComplexL.One, ComplexL.Zero, ComplexL.Zero),
@@ -49,7 +68,7 @@ namespace lab11
                 Console.WriteLine(a == b);
             }
 
-            if (true)
+            if (false)
             {
                 var v = new VectorL<int>();
                 Console.WriteLine(v);

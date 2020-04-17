@@ -9,7 +9,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -17,6 +16,8 @@ namespace lab11
 {
     public class VectorL<T> : ICloneable, IEnumerable, IComparable, IComparable<VectorL<T>> where T : new()
     {
+        private List<T> _vec;
+
         protected bool Equals(VectorL<T> other)
         {
             return Equals(_vec, other._vec);
@@ -34,8 +35,6 @@ namespace lab11
         {
             return (_vec != null ? _vec.GetHashCode() : 0);
         }
-
-        private List<T> _vec;
 
         public VectorL()
         {
