@@ -42,13 +42,14 @@ namespace lab12
                 var words = s.Split(' ');
                 foreach (var checkedS in words.SelectMany(CheckWord).Where(x => !x.Equals(string.Empty)))
                 {
-                    if (dict.ContainsKey(checkedS))
+                    var edited = checkedS.ToLower();
+                    if (dict.ContainsKey(edited))
                     {
-                        dict[checkedS] += 1;
+                        dict[edited] += 1;
                     }
                     else
                     {
-                        dict[checkedS] = 1;
+                        dict[edited] = 1;
                     }
                 }
             }
