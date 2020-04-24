@@ -28,7 +28,7 @@ namespace lab11
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((VectorL<T>) obj);
+            return Equals(obj as VectorL<T>);
         }
 
         public override int GetHashCode()

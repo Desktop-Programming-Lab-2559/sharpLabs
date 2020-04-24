@@ -18,19 +18,26 @@ namespace lab11
     {
         static void Main(string[] args)
         {
-            // var c = new ComplexL(1,1);
-            // c.DivideByZeroEvent += PrintEvent;
-            // c.DivideByZeroEvent += PrintEventWithArgs;
+            if (true)
+            {
+                var c = new ComplexL(-1, 0);
+                c.DivideByZeroEvent += PrintEvent;
+                c.DivideByZeroEvent += PrintEventWithArgs;
 
-            // var c2 = new ComplexL(0, 0);
-            // Console.WriteLine(c2.Arg);
-            // Console.WriteLine(c / c2);
-            
+                var c2 = new ComplexL(0, 0);
+                // Console.WriteLine($"c2 arg = {c2.Arg}");
+                // Console.WriteLine(c / c2);
+                foreach (var complexL in c.Root(2))
+                {
+                    Console.WriteLine(complexL);
+                }
+            }
+
             // int[] a = {1, 2, 3};
             // var b = new[] {1, 2, 3};
             // var v = new VectorL<int>(new int[]{1234, 2});
 
-            if (true)
+            if (!true)
             {
                 // var doubleArr_1 = new double[4] { 3.0, 2.0, 1.0, 1.0 };
                 // var doubleArr_2 = new double[4] { 3.0, 3.0, 1.0, 2.0 };
@@ -49,7 +56,7 @@ namespace lab11
                 
             }
 
-            if (false) {
+            if (!true) {
                 var basis = new[]
                 {
                     new VectorL<ComplexL>(ComplexL.One, ComplexL.Zero, ComplexL.Zero),
@@ -62,7 +69,7 @@ namespace lab11
                 Console.WriteLine($"Vec length = {newBasis[0].Abs()}");
             }
 
-            if (false)
+            if (!true)
             {
                 VectorL<int> a = new VectorL<int>(3, 2, 2), b = new VectorL<int>(3, 2, 2);
                 Console.WriteLine(a == b);
@@ -73,6 +80,9 @@ namespace lab11
                 var v = new VectorL<int>();
                 Console.WriteLine(v);
             }
+
+            // var v1 = new VectorL<ComplexL>(ComplexL.One, ComplexL.Zero, ComplexL.Zero);
+            // Console.WriteLine(v1.Abs());
         }
 
         private static void PrintEvent(object sender, ComplexEventArgs args)

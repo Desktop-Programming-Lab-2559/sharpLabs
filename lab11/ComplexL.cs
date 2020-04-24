@@ -9,6 +9,10 @@ namespace lab11
         private double _real;
         private double _imagine;
 
+        public double Real => _real;
+
+        public double Imagine => _imagine;
+
         public ComplexL(double real)
         {
             _real = real;
@@ -157,7 +161,7 @@ namespace lab11
 
         public double Arg => GetArg();
 
-        public List<ComplexL> Root(int root)
+        public ComplexL[] Root(int root)
         {
             var list = new List<ComplexL>();
             double abs = Math.Pow(Abs, 1.0 / root), arg = Arg;
@@ -167,7 +171,12 @@ namespace lab11
                 var im = abs * Math.Sin((arg + 2 * Math.PI * i) / root);
                 list.Add(new ComplexL(re, im));
             }
-            return list;
+            return list.ToArray();
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return base.Equals(obj);
         }
 
         public ComplexL Pow(int degree)
@@ -183,7 +192,7 @@ namespace lab11
         public event ComplexHandler DivideByZeroEvent;
     }
 
-    public class ComplexEventArgs
+    public class ComplexEventArgs : EventArgs
     {
         public string Message { get; }
         public ComplexL First { get; }

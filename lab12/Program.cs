@@ -3,6 +3,7 @@
 // Срок сдачи до 25 апреля. 
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,18 +57,28 @@ namespace lab12
 
             var maxCount = dict.Values.Max();
             var mostCommonWord = dict.Where(pair => pair.Value == maxCount);
-            Console.Write($"Наибольшее число повторений {maxCount} ");
+            Console.WriteLine($"Наибольшее число повторений {maxCount} ");
             foreach (var word in mostCommonWord)
             {
                 Console.Write($"{word} ");
             }
 
             Console.WriteLine();
-            Console.WriteLine("All words");
-            foreach (var pair in dict)
+            Console.WriteLine("Enter number of most popular words you want to be shown");
+            var number = Console.ReadLine();
+            Console.WriteLine("Most popular");
+            foreach (var p in dict.OrderBy(pair => pair.Value).Reverse()
+                .Take(int.TryParse(number, out var num) ? num : 10))
             {
-                Console.WriteLine($"{pair.Key} : {pair.Value}");
+                Console.WriteLine(p);
             }
+
+            
+            // Console.WriteLine("All words");
+            // foreach (var pair in dict)
+            // {
+            //     Console.WriteLine($"{pair.Key} : {pair.Value}");
+            // }
         }
 
         public static string[] CheckWord(string word)
