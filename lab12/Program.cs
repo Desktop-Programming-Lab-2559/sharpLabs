@@ -33,19 +33,16 @@ namespace lab12
 
                 filePath = tPath;
             }
-            
+
             var dict = new Analyzer(filePath);
-            
+
             if (dict.Count == 0)
             {
                 Console.WriteLine("В файле нет слов");
                 return;
             }
 
-            foreach (var p in dict.Stat())
-            {
-                Console.WriteLine(p.ToString());
-            }
+            foreach (var p in dict.Stat()) Console.WriteLine(p.ToString());
 
             Console.WriteLine("Введите слово, о котором надо показать информацию");
             var oneWord = Console.ReadLine();
