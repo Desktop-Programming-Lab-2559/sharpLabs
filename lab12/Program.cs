@@ -3,11 +3,7 @@
 // Срок сдачи до 25 апреля. 
 
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace lab12
 {
@@ -27,6 +23,7 @@ namespace lab12
             if (!File.Exists(filePath))
             {
                 var baseFolder = AppDomain.CurrentDomain.BaseDirectory;
+                Console.WriteLine(baseFolder);
                 var tPath = string.Concat(baseFolder, args[0]);
                 if (!File.Exists(tPath))
                 {
@@ -37,54 +34,22 @@ namespace lab12
                 filePath = tPath;
             }
             
-            var dict = new Dictionary<string, int>();
-            foreach (var s in File.ReadLines(filePath))
-            {
-                var words = s.Split(' ');
-                foreach (var checkedS in words.SelectMany(CheckWord).Where(x => !x.Equals(string.Empty)))
-                {
-                    var edited = checkedS.ToLower();
-                    if (dict.ContainsKey(edited))
-                    {
-                        dict[edited] += 1;
-                    }
-                    else
-                    {
-                        dict[edited] = 1;
-                    }
-                }
-            }
-
-            var maxCount = dict.Values.Max();
-            var mostCommonWord = dict.Where(pair => pair.Value == maxCount);
-            Console.WriteLine($"Наибольшее число повторений {maxCount} ");
-            foreach (var word in mostCommonWord)
-            {
-                Console.Write($"{word} ");
-            }
-
-            Console.WriteLine();
-            Console.WriteLine("Enter number of most popular words you want to be shown");
-            var number = Console.ReadLine();
-            Console.WriteLine("Most popular");
-            foreach (var p in dict.OrderBy(pair => pair.Value).Reverse()
-                .Take(int.TryParse(number, out var num) ? num : 10))
-            {
-                Console.WriteLine(p);
-            }
-
+            var dict = new Analyzer(filePath);
             
-            // Console.WriteLine("All words");
-            // foreach (var pair in dict)
-            // {
-            //     Console.WriteLine($"{pair.Key} : {pair.Value}");
-            // }
-        }
+            if (dict.Count == 0)
+            {
+                Console.WriteLine("В файле нет слов");
+                return;
+            }
 
-        public static string[] CheckWord(string word)
-        {
-            var regex = new Regex("[^a-zа-я]", RegexOptions.IgnoreCase);
-            return regex.Split(word);
+            foreach (var p in dict.Stat())
+            {
+                Console.WriteLine(p.ToString());
+            }
+
+            Console.WriteLine("Введите слово, о котором надо показать информацию");
+            var oneWord = Console.ReadLine();
+            Console.WriteLine(dict.WordInfo(oneWord));
         }
     }
 }
