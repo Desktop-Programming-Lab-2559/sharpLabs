@@ -14,12 +14,19 @@ namespace lab14
         public static void Main(string[] args)
         {
             // Operation.Tracing += Console.WriteLine;
-            // var op = new Operation("a+b");
+            // var op = new Operation("!(a|(a|b)&!c)~d");
+            // var op = new Operation("!((A|B)&!C)~D");
+            // var op = new Operation("!(!(!(A|B)&C)+C)");
+            var op = new Operation("!!!(A|B)&C+C");
+            Console.WriteLine(op);
+            Console.WriteLine(op.OperationString);
             // var oOp = new Operation("a|b&c");
             //
-            // var opCollection = new Operations {op, oOp};
+            // var opCollection = new Operations ();
+            // opCollection.Add(op);
+            // opCollection.Add(oOp);
             // opCollection.Save("C:/Users/viktor/RiderProjects/Labs/lab14/test.txt");
-            //
+            
             // var loadedCollection = Operations.Load("C:/Users/viktor/RiderProjects/Labs/lab14/test.txt");
             // foreach (Operation operation in loadedCollection)
             // {
@@ -27,11 +34,6 @@ namespace lab14
             //     Console.WriteLine(operation.PCNF());
             //     Console.WriteLine(operation.PDNF());
             // }
-            
-            var t = new Test();
-            t.Save();
-
-            Console.WriteLine(Test.Load().ToString());
 
             // var table = op.CalculateTable();
             // foreach (var bools in table)

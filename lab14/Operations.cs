@@ -6,10 +6,10 @@ using System.Text.Json;
 
 namespace lab14
 {
-    public class Operations : IEnumerable
+    public class Operations // : IEnumerable<Operation>
     {
-        private List<Operation> _operations { get; set; } = new List<Operation>();
-        
+        public List<Operation> _operations { get; set; } = new List<Operation>();
+
         public Operations(){}
         
         public static Operations Load(string path)
@@ -30,7 +30,8 @@ namespace lab14
             {
                 WriteIndented = true,
             };
-            File.WriteAllText(path, JsonSerializer.Serialize(this, options));
+            var s = JsonSerializer.Serialize(this, options);
+            File.WriteAllText(path, s);
             // File.WriteAllBytes(path, JsonSerializer.SerializeToUtf8Bytes(this, options));
         }
 
@@ -38,6 +39,11 @@ namespace lab14
         {
             _operations.Add(op);
         }
+
+        // IEnumerator<Operation> IEnumerable<Operation>.GetEnumerator()
+        // {
+        //     return _operations.GetEnumerator();
+        // }
 
         public IEnumerator GetEnumerator()
         {

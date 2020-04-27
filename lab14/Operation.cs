@@ -9,7 +9,12 @@ namespace lab14
 {
     public class Operation
     {
-        private string _operationString { get; set; }
+        private string _operationString;
+
+        public string OperationString
+        {
+            get => _operationString;
+        }
 
         public string OriginalString { get; set; }
 
@@ -57,7 +62,7 @@ namespace lab14
                     {
                         stack.Push(symbol);
                     }
-                    else if (symbol.Priority() > stack.Peek().Priority())
+                    else if (symbol.Priority() >= stack.Peek().Priority())
                     {
                         stack.Push(symbol);
                     }
@@ -101,6 +106,7 @@ namespace lab14
             while (stack.Count != 0)
             {
                 Tracing?.Invoke($"Added symbol {stack.Peek()}");
+                if (stack.Peek() == "(") throw new WrongBracketsException($"Wrong brackets in {OriginalString}");
                 workString.Append(stack.Pop());
             }
 
@@ -119,8 +125,7 @@ namespace lab14
 
         private char[] GetVariable()
         {
-            return Regex.Replace(_operationString.ToString(), "[^a-z]", "", 
-                                        RegexOptions.IgnoreCase)
+            return Regex.Replace(OriginalString, "[^a-z]", "", RegexOptions.IgnoreCase)
                 .Distinct()
                 .ToArray();
         }
@@ -230,13 +235,14 @@ namespace lab14
 
         public string PCNF()
         {
+            Tracing?.Invoke($"Compute PCNF");
             var variables = GetVariable();
             var pcnf = new StringBuilder();
             foreach (var line in CalculateTable())
             {
                 if (!line.Last())
                 {
-                    Tracing?.Invoke($"");
+                    // Tracing?.Invoke($"");
                     var tmp = new StringBuilder("(");
                     for (int i = 0; i < line.Length - 1; i++)
                     {
@@ -255,6 +261,7 @@ namespace lab14
 
         public string PDNF()
         {
+            Tracing?.Invoke($"Compute PDNF");
             var variables = GetVariable();
             var pdnf = new StringBuilder();
             foreach (var line in CalculateTable())
@@ -293,7 +300,9 @@ namespace lab14
             {"(", 7}
         };
 
-        private static readonly Dictionary<string, Func<bool, bool, bool>> OperationDelegate = new Dictionary<string, Func<bool, bool, bool>>
+        
+        private static readonly Dictionary<string, Func<bool, bool, bool>> OperationDelegate =
+            new Dictionary<string, Func<bool, bool, bool>>
         {
             {"~", (l, r) => l == r}, // эквивалентность
             {"=>", (l, r) => !l | r}, // импликация
