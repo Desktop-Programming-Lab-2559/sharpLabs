@@ -15,7 +15,7 @@ namespace lab12
             foreach (var s in File.ReadLines(path))
             {
                 var words = s.Split(' ');
-                foreach (var checkedS in words.SelectMany(CheckWord).Where(x => !x.Equals(string.Empty)))
+                foreach (var checkedS in words.SelectMany(CheckWord))
                 {
                     var edited = checkedS.ToLower();
                     if (dict.ContainsKey(edited))
@@ -33,7 +33,7 @@ namespace lab12
         public static string[] CheckWord(string word)
         {
             var regex = new Regex("[^a-zа-я]", RegexOptions.IgnoreCase);
-            return regex.Split(word);
+            return regex.Split(word).Where(x => !x.Equals(string.Empty)).ToArray();
         }
 
         public int Count => dict.Count;

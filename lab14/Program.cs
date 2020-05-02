@@ -14,26 +14,26 @@ namespace lab14
         public static void Main(string[] args)
         {
             // Operation.Tracing += Console.WriteLine;
-            // var op = new Operation("!(a|(a|b)&!c)~d");
-            // var op = new Operation("!((A|B)&!C)~D");
-            // var op = new Operation("!(!(!(A|B)&C)+C)");
-            var op = new Operation("!!!(A|B)&C+C");
-            Console.WriteLine(op);
-            Console.WriteLine(op.OperationString);
-            // var oOp = new Operation("a|b&c");
+            // var op1 = new Operation("!(a|(a|b)&!c)~d");
+            // var op2 = new Operation("!((A|B)&!C)~D");
+            // var op3 = new Operation("!(!(!(A|B)&C)+C)");
+            // var op4 = new Operation("!!!(A|B)&C+C");
+            // var op5 = new Operation("a|b&c");
+            // Console.WriteLine(op);
+            // Console.WriteLine(op.OperationString);
             //
             // var opCollection = new Operations ();
             // opCollection.Add(op);
             // opCollection.Add(oOp);
             // opCollection.Save("C:/Users/viktor/RiderProjects/Labs/lab14/test.txt");
             
-            // var loadedCollection = Operations.Load("C:/Users/viktor/RiderProjects/Labs/lab14/test.txt");
-            // foreach (Operation operation in loadedCollection)
-            // {
-            //     Console.WriteLine(operation);
-            //     Console.WriteLine(operation.PCNF());
-            //     Console.WriteLine(operation.PDNF());
-            // }
+            var loadedCollection = Operations.Load("C:/Users/viktor/RiderProjects/Labs/lab14/test.json");
+            foreach (Operation operation in loadedCollection)
+            {
+                Console.WriteLine(operation);
+                Console.WriteLine(operation.PCNF());
+                Console.WriteLine(operation.PDNF());
+            }
 
             // var table = op.CalculateTable();
             // foreach (var bools in table)
