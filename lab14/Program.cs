@@ -33,6 +33,7 @@ namespace lab14
                 Console.WriteLine(operation);
                 Console.WriteLine(operation.PCNF());
                 Console.WriteLine(operation.PDNF());
+                Console.WriteLine();
             }
 
             // var table = op.CalculateTable();

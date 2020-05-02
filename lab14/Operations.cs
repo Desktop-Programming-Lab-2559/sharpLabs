@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.Json;
 
 namespace lab14
@@ -33,6 +34,18 @@ namespace lab14
             var s = JsonSerializer.Serialize(this, options);
             File.WriteAllText(path, s);
             // File.WriteAllBytes(path, JsonSerializer.SerializeToUtf8Bytes(this, options));
+        }
+
+        public void SavePcnfPdnf(string path)
+        {
+            var s = new StringBuilder();
+            foreach (var operation in _operations)
+            {
+                s.Append($"{operation.OriginalString}");
+                s.Append($"{operation.PCNF()}\n");
+                s.Append($"{operation.PDNF()}\n");
+            }
+            File.WriteAllText(path, s.ToString());
         }
 
         public void Add(Operation op)
