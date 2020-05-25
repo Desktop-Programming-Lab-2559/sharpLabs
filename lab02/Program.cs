@@ -1,11 +1,12 @@
 ﻿// Напишите функцию, вычисляющую числа 𝑒,𝜋 иln2 с точностью 15 знаков после запятой. Срок сдачи до 14 марта.
+
 using System;
 
 namespace lab02
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Console.WriteLine($"e  = {E()}");
             Console.WriteLine("e  = 2,7182818284590452");
@@ -20,10 +21,10 @@ namespace lab02
         private static double E()
         {
             double epsilon = 1e-15, e = 0, c = 1;
-            int i = 1;
-            while (1/c > epsilon)
+            var i = 1;
+            while (1 / c > epsilon)
             {
-                e += 1/c;
+                e += 1 / c;
                 c *= i;
                 ++i;
             }
@@ -33,7 +34,6 @@ namespace lab02
 
         private static double Pi()
         {
-            //Ряд Нилаканта
             double pi = 3, epsilon = 1e-5;
             int i = 3, sign = 1;
             double c;
@@ -50,13 +50,14 @@ namespace lab02
         private static double Ln2()
         {
             double epsilon = 1e-15, ln = 0;
-            double c = 0.5;
-            int i = 2;
+            var c = 0.5;
+            var i = 2;
             while (c > epsilon)
             {
                 ln += c;
                 c = 1 / Math.Pow(2, i) / i++;
             }
+
             return ln;
         }
     }

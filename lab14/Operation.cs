@@ -125,7 +125,7 @@ namespace lab14
 
         private char[] GetVariable()
         {
-            return Regex.Replace(OriginalString, "[^a-z]", "", RegexOptions.IgnoreCase)
+            return Regex.Replace(OriginalString, "[^a-z]", "", RegexOptions.IgnoreCase)// [^A-Za-z]
                 .Distinct()
                 .ToArray();
         }
@@ -137,10 +137,12 @@ namespace lab14
         
         public bool Calculate(params bool[] values)
         {
-            if (VariablesCount() != values.Length) throw new ArgumentException("Wrong number of variables");
+            var vCount = VariablesCount();
+            if (vCount != values.Length) throw new ArgumentException("Wrong number of variables");
             if (_operationString == null) ProcessOperationString();
 
-            var workString = ReplaceWithValues(values);
+            var workString = _operationString;
+            if (vCount != 0) workString = ReplaceWithValues(values);
             
             var result = new Stack<bool>();
             for (int i = 0; i < workString.Length; i++)
@@ -237,6 +239,10 @@ namespace lab14
         {
             Tracing?.Invoke($"Compute PCNF");
             var variables = GetVariable();
+            if (variables.Length == 0)
+            {
+                return string.Empty;
+            }
             var pcnf = new StringBuilder();
             foreach (var line in CalculateTable())
             {
@@ -255,7 +261,8 @@ namespace lab14
                 }
             }
 
-            pcnf.Remove(pcnf.Length - 1, 1);
+            if (pcnf.Length > 0)
+                pcnf.Remove(pcnf.Length - 1, 1);
             return pcnf.ToString();
         }
 
@@ -263,6 +270,10 @@ namespace lab14
         {
             Tracing?.Invoke($"Compute PDNF");
             var variables = GetVariable();
+            if (variables.Length == 0)
+            {
+                return string.Empty;
+            }
             var pdnf = new StringBuilder();
             foreach (var line in CalculateTable())
             {
@@ -280,7 +291,8 @@ namespace lab14
                 }
             }
 
-            pdnf.Remove(pdnf.Length - 1, 1);
+            if (pdnf.Length > 0)
+                pdnf.Remove(pdnf.Length - 1, 1);
             return pdnf.ToString();
         }
     }

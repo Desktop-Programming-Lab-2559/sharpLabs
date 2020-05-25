@@ -31,8 +31,8 @@ namespace lab14
             foreach (Operation operation in loadedCollection)
             {
                 Console.WriteLine(operation);
-                Console.WriteLine(operation.PCNF());
-                Console.WriteLine(operation.PDNF());
+                Console.WriteLine($"PCNF {operation.PCNF()}");
+                Console.WriteLine($"PDNF {operation.PDNF()}");
                 Console.WriteLine();
             }
 

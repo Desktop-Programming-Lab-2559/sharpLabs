@@ -3,16 +3,18 @@
 // b) Прочитать с консоли произвольное число чисел и найти их среднее геометрическое. При вводе недопустимого символа
 //     вывести информацию об ошибке. Примечание. Допускается ввод целых и вещественных чисел. Разделителем целой и
 //     дробной части является символ точки или запятой. Срок сдачи до 14 марта.
+
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace lab03
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            // PartA();
+            PartA();
             PartB();
         }
 
@@ -21,12 +23,8 @@ namespace lab03
             Console.WriteLine("Part A\nEnter something");
             var s = Console.ReadLine();
             if (s == null) return;
-            int sum = 0;
-            foreach (var some in s)
-            {
-                sum += some;
-            }
-                
+            var sum = s.Aggregate(0, (current, some) => current + some);
+
             Console.WriteLine();
             Console.WriteLine($"Avg = {(double) sum / s.Length}");
         }
@@ -39,7 +37,7 @@ namespace lab03
             while (s != "")
             {
                 s = s.Replace(".", ",");
-                if (double.TryParse(s, out double c))
+                if (double.TryParse(s, out var c))
                     list.Add(c);
                 else
                     Console.WriteLine("Uncorrected data");
@@ -55,7 +53,8 @@ namespace lab03
             }
 
             Console.WriteLine();
-            Console.WriteLine($"Gmean = {(list.Count != 0 ? Math.Sign(value)*Math.Pow(Math.Abs(value), 1.0/list.Count) : 0)}");
+            Console.WriteLine(
+                $"Gmean = {(list.Count != 0 ? Math.Sign(value) * Math.Pow(Math.Abs(value), 1.0 / list.Count) : 0)}");
         }
     }
 }

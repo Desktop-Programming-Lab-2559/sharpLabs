@@ -8,20 +8,7 @@ namespace lab10
 {
     public class Polynomial<T> : IEnumerable, ICloneable where T : new()
     {
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Polynomial<T>) obj);
-        }
-
         private List<T> _coefficients;
-
-        // public Polynomial(List<T> coefficients)
-        // {
-        //     _coefficients = coefficients;
-        // }
 
         public Polynomial()
         {
@@ -42,12 +29,29 @@ namespace lab10
 
         public int Degree => _coefficients.Count - 1;
 
+        public object Clone()
+        {
+            return new Polynomial<T>(this);
+        }
+
+        public IEnumerator GetEnumerator()
+        {
+            return _coefficients.GetEnumerator();
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Polynomial<T>) obj);
+        }
+
         public static Polynomial<T> Zero(int degree = 0)
         {
-            // if (!typeof(T).IsValueType) throw new TypeException("This type doesn't support this operation"); 
             if (degree < 0) throw new NegativeDegreeException();
             var p = new Polynomial<T>();
-            for (var i = 0; i <= degree; i++) 
+            for (var i = 0; i <= degree; i++)
                 p._coefficients.Add(!typeof(T).IsValueType ? default : new T());
 
             return p;
@@ -55,12 +59,9 @@ namespace lab10
 
         private void Add(Polynomial<T> p)
         {
-            while (Size < p.Size)
-            {
-                SetCoefficient(!typeof(T).IsValueType ? default : new T(),Size + 1);
-            }
+            while (Size < p.Size) SetCoefficient(!typeof(T).IsValueType ? default : new T(), Size + 1);
 
-            for (var i = 0; i < p.Size; i++) 
+            for (var i = 0; i < p.Size; i++)
             {
                 dynamic b = p._coefficients[i];
                 _coefficients[i] += b;
@@ -76,11 +77,8 @@ namespace lab10
 
         private void Subtract(Polynomial<T> p)
         {
-            while (Size < p.Size)
-            {
-                SetCoefficient(!typeof(T).IsValueType ? default : new T(),Size + 1);
-            }
-            
+            while (Size < p.Size) SetCoefficient(!typeof(T).IsValueType ? default : new T(), Size + 1);
+
             for (var i = 0; i < Size; i++)
             {
                 dynamic b = p._coefficients[i];
@@ -95,10 +93,7 @@ namespace lab10
             for (var j = 0; j < p.Size; j++)
             {
                 dynamic c = _coefficients[i];
-                if (res._coefficients[i + j] == null)
-                {
-                    res._coefficients[i + j] = new T();
-                }
+                if (res._coefficients[i + j] == null) res._coefficients[i + j] = new T();
                 res._coefficients[i + j] += c * p._coefficients[j];
             }
 
@@ -108,7 +103,7 @@ namespace lab10
         public static (Polynomial<T>, Polynomial<T>) Divide(Polynomial<T> a, Polynomial<T> b)
         {
             var tmp = new Polynomial<T>(a);
-            
+
             if (a.Size < b.Size) return (Zero(), a);
             if (a.Size == b.Size)
             {
@@ -127,11 +122,9 @@ namespace lab10
                 dynamic rCoef = tmp._coefficients[^1];
                 var c = rCoef / b._coefficients[^1];
                 res.SetCoefficient(c, tmp.Size - b.Size);
-                Polynomial<T> addedB = new Polynomial<T>(b);
-                for (int i = 0; i < tmp.Size - b.Size; i++)
-                {
-                    addedB._coefficients.Insert(0 , typeof(T).IsValueType ? default : new T());
-                }
+                var addedB = new Polynomial<T>(b);
+                for (var i = 0; i < tmp.Size - b.Size; i++)
+                    addedB._coefficients.Insert(0, typeof(T).IsValueType ? default : new T());
                 tmp -= addedB * c;
                 tmp.Trim();
             }
@@ -141,37 +134,34 @@ namespace lab10
 
         private void Trim()
         {
-            for (int i = Size - 1; i > 0; i--)
-            {
+            for (var i = Size - 1; i > 0; i--)
                 switch (_coefficients[^1])
                 {
                     case Matrix m:
                         if (m.IsZero()) _coefficients.RemoveAt(_coefficients.Count - 1);
                         break;
                     default:
-                        if (Math.Abs((dynamic)_coefficients[^1]) < double.Epsilon) _coefficients.RemoveAt(_coefficients.Count - 1);
+                        if (Math.Abs((dynamic) _coefficients[^1]) < double.Epsilon)
+                            _coefficients.RemoveAt(_coefficients.Count - 1);
                         break;
                 }
-            }
         }
 
         public override string ToString()
         {
             var s = new StringBuilder();
-            for (var i = _coefficients.Count - 1; i >= 0; i--) 
-                if (_coefficients[0] is Matrix) 
+            for (var i = _coefficients.Count - 1; i >= 0; i--)
+                if (_coefficients[0] is Matrix)
                 {
                     dynamic c = _coefficients[i];
                     s.Append($"+({c.ToLine()})x^{i}");
                 }
-                else s.Append($"+({_coefficients[i]})x^{i}");
+                else
+                {
+                    s.Append($"+({_coefficients[i]})x^{i}");
+                }
 
             return s.ToString();
-        }
-
-        public object Clone()
-        {
-            return new Polynomial<T>(this);
         }
 
         public static Polynomial<T> operator +(Polynomial<T> a, Polynomial<T> b)
@@ -188,7 +178,7 @@ namespace lab10
         {
             return Multiply(a, b);
         }
-        
+
         public static Polynomial<T> operator *(Polynomial<T> a, T k)
         {
             return Multiply(a, k);
@@ -213,11 +203,12 @@ namespace lab10
         {
             return !Equals(_coefficients, p._coefficients);
         }
-        
+
         public static bool operator <(Polynomial<T> a, Polynomial<T> b)
         {
             return a.Less(b);
         }
+
         public static bool operator >(Polynomial<T> a, Polynomial<T> b)
         {
             return !a.Less(b);
@@ -229,10 +220,7 @@ namespace lab10
             if (Degree > p.Degree) return false;
 
             var res = true;
-            for (int i = 0; i < Degree && res; i++)
-            {
-                res &= (dynamic) _coefficients[i] < p._coefficients[i];
-            }
+            for (var i = 0; i < Degree && res; i++) res &= (dynamic) _coefficients[i] < p._coefficients[i];
 
             return res;
         }
@@ -244,7 +232,7 @@ namespace lab10
             res.Trim();
             return res;
         }
-        
+
         private static Polynomial<T> Multiply(Polynomial<T> a, T k)
         {
             var res = new Polynomial<T>(a);
@@ -255,11 +243,12 @@ namespace lab10
 
         private void Multiply(T d)
         {
-            for (int i = 0; i < Size; i++)
+            for (var i = 0; i < Size; i++)
             {
                 dynamic c = _coefficients[i];
                 _coefficients[i] = c * d;
             }
+
             Trim();
         }
 
@@ -287,7 +276,7 @@ namespace lab10
                 dynamic p = point;
                 dynamic t = (T) p.Clone();
 
-                for (int i = 0; i < Size; i++)
+                for (var i = 0; i < Size; i++)
                 {
                     res += _coefficients[i] * t;
                     t *= p;
@@ -298,55 +287,40 @@ namespace lab10
             else
             {
                 T res = default;
-                for (int i = 0; i < Size; i++)
+                for (var i = 0; i < Size; i++)
                 {
                     dynamic c = _coefficients[i], p = point;
                     res += c * Math.Pow(p, i);
                 }
+
                 return res;
             }
         }
 
         private Polynomial<T> GetMonomial(int degree)
         {
-            Polynomial<T> p = Zero(degree);
+            var p = Zero(degree);
             p._coefficients[degree] = _coefficients[degree];
             return p;
         }
-        
+
         public Polynomial<T> Compose(Polynomial<T> p)
         {
             if (Size < 1) return (Polynomial<T>) Clone();
             var res = Zero();
 
             res += GetMonomial(0);
-            for (int i = 1; i < Size; i++)
+            for (var i = 1; i < Size; i++)
             {
                 var m = GetMonomial(i);
                 var a = m * p;
                 res.Add(a);
             }
+
             res.Trim();
-            
+
             return res;
         }
-
-        // public override bool Equals(object? obj)
-        // {
-        //     if (obj == null) return false;
-        //     if (!(obj is Polynomial<T>)) return false;
-        //     
-        //     var p = (Polynomial<T>) obj;
-        //     if (Degree != p.Degree) return false;
-        //     
-        //     var res = true;
-        //     for (int i = 0; i < Degree && res; i++)
-        //     {
-        //         res &= (dynamic)_coefficients[i] == p._coefficients;
-        //     }
-        //
-        //     return res;
-        // }
 
         public bool Equals(Polynomial<T> other)
         {
@@ -358,21 +332,9 @@ namespace lab10
             return _coefficients != null ? _coefficients.GetHashCode() : 0;
         }
 
-        public IEnumerator GetEnumerator()
-        {
-            return _coefficients.GetEnumerator();
-        }
-
         [Serializable]
         public class TypeException : Exception
         {
-            //
-            // For guidelines regarding the creation of new exception types, see
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-            // and
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-            //
-
             public TypeException()
             {
             }
@@ -395,13 +357,6 @@ namespace lab10
         [Serializable]
         public class NegativeDegreeException : Exception
         {
-            //
-            // For guidelines regarding the creation of new exception types, see
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/cpgenref/html/cpconerrorraisinghandlingguidelines.asp
-            // and
-            //    http://msdn.microsoft.com/library/default.asp?url=/library/en-us/dncscol/html/csharp07192001.asp
-            //
-
             public NegativeDegreeException()
             {
             }

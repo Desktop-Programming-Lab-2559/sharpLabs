@@ -9,7 +9,7 @@ using System.Text;
 
 namespace lab05
 {
-    internal class Program
+    class Program
     {
         private static void Main(string[] args)
         {
@@ -40,8 +40,8 @@ namespace lab05
                 var stream = File.Open(args[0], FileMode.Open);
                 var arr = new byte[stream.Length];
                 stream.Read(arr, 0, arr.Length);
-                var text = System.Text.Encoding.Default.GetString(arr);
-                
+                var text = Encoding.Default.GetString(arr);
+
                 sNum = text.Split(' ')[1];
                 // sNum = "0,3";
                 if (!double.TryParse(sNum, out var c))
@@ -49,8 +49,8 @@ namespace lab05
                     Console.WriteLine("Cannot parse number");
                     return;
                 }
-                
-                string sBase = text.Split(' ')[2];
+
+                var sBase = text.Split(' ')[2];
                 if (!int.TryParse(sBase, out baseNum))
                 {
                     Console.WriteLine("Cannot parse base");
@@ -91,9 +91,7 @@ namespace lab05
                 // rems.ForEach(Console.Write);
                 // rem > 9 ? Convert.ToChar('A' + rem - 10).ToString() : rem.ToString()
                 foreach (var rem in rems)
-                {
                     Console.Write(rem > 9 ? Convert.ToChar('A' + rem - 10).ToString() : rem.ToString());
-                }
                 Console.WriteLine();
             }
             else
@@ -103,6 +101,7 @@ namespace lab05
                     if (i == fPartsList.IndexOf(fractionPart % magic)) Console.Write('(');
                     Console.Write(rems[i] > 9 ? Convert.ToChar('A' + rems[i] - 10).ToString() : rems[i].ToString());
                 }
+
                 Console.WriteLine(')');
             }
         }

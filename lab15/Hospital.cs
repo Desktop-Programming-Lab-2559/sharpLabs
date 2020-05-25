@@ -33,11 +33,11 @@ namespace lab15
         private readonly ConcurrentDictionary<int, Patient> _queue;
         private readonly Random rnd = new Random();
 
-        public Hospital(int doctorsCount, int examiningRoomSize, int timing, string logFile = null)
+        public Hospital(int doctorsCount, int examiningRoomSize, int timing, string logFile = "")
         {
             ExaminingRoomSize = examiningRoomSize;
             Timing = timing;
-            LogFile = File.AppendText(logFile);
+            LogFile = File.CreateText(logFile);
             DoctorsCount = doctorsCount;
             IsDayOver = false;
 
@@ -47,7 +47,7 @@ namespace lab15
             _queue = new ConcurrentDictionary<int, Patient>();
             _examiningRoom = new ConcurrentQueue<Patient>();
 
-            LoggerEvent += StandardLogger;
+            if (logFile != "") LoggerEvent += StandardLogger;
         }
 
         public static int MagicTiming { get; } = 500;
@@ -251,9 +251,29 @@ namespace lab15
             }
         }
 
-        private void StandardLogger(string text)
+        public void StandardLogger(string text)
         {
             LogFile.Write(text);
+        }
+
+        public int GetDoctorForConsulting()
+        {
+            while (true)
+            {
+                foreach (var doctor in _doctors)
+                {
+                    if (!doctor.Value.IsWork)
+                    {
+                        doctor.Value.IsWork = true;
+                        return doctor.Key;
+                    }
+                }
+            }
+        }
+
+        public void FreeDoctor(int docNum)
+        {
+            _doctors[docNum].IsWork = false;
         }
     }
 }

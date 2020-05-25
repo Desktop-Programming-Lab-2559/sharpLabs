@@ -12,6 +12,8 @@ namespace lab13
 {
     internal class Program
     {
+        private const string Notepad = "C:/Windows/System32/notepad.exe";
+
         public static void Main(string[] args)
         {
             if (args.Length < 2)
@@ -28,13 +30,53 @@ namespace lab13
 
             for (var i = 1; i < fileCollection.Count; i++) Console.WriteLine($"[{i.ToString().PadLeft(3)}] {fileCollection[i]}");
 
-            var s = Console.ReadLine();
-            int.TryParse(s, out var index);
 
-            Process.Start("C:/Windows/System32/notepad.exe", fileCollection[index]);
-            
+            Console.WriteLine("Enter file index");
+            var s = Console.ReadLine();
+            if (int.TryParse(s, out var index))
+            {
+                if (index > fileCollection.Count || index < 1)
+                {
+                    Console.WriteLine("err");
+                    return;
+                }
+            }
+            else
+            {
+                Console.WriteLine("err");
+                return;
+            }
+
+            var p = OpenFile(fileCollection[index]);
+
             Compress(fileCollection[index], $"{fileCollection[index]}.gz");
             Console.WriteLine($"{fileCollection[index]}.gz");
+            
+            Console.ReadKey();
+            try
+            {
+                p?.Kill();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Couldn't close notepad\n{e.Message}");
+            }
+        }
+
+        public static Process OpenFile(string file)
+        {
+            Process process = null;
+            try
+            {
+                process = Process.Start(Notepad, file);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Cannot open file\n{e.Message}");
+                throw;
+            }
+
+            return process;
         }
 
         public static void SearchFile(string directory, string pattern, StringCollection collection)
